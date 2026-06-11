@@ -5,6 +5,7 @@ import morgan from "morgan";
 import authRoutes from "./modules/auth/auth.routes";
 import { errorHandler } from "./middlewares/errorHandler";
 import authTestRoutes from "./modules/auth/auth.testRoutes";
+import verificationRequestRoutes from "./modules/verificationRequests/verificationRequest.routes";
 
 const app = express();
 
@@ -33,6 +34,9 @@ app.use("/api/auth", authRoutes);
 // I keep these temporary test routes to prove authentication and RBAC work.
 // Later, we can remove them or keep them only for development.
 app.use("/api/auth/test", authTestRoutes);
+
+
+app.use("/api/verification-requests", verificationRequestRoutes);
 
 // I keep this after all routes so it catches errors from the whole app.
 app.use(errorHandler);
