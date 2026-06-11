@@ -52,6 +52,36 @@ export const verificationService = {
             );
         }
 
+        // I check whether approved consent has passed its expiry time.
+        // If it has expired, verification must stop.
+        if (
+            request.consent.expiresAt &&
+            request.consent.expiresAt < new Date()
+        ) {
+            await prisma.consent.update({
+                where: {
+                    id: request.consent.id,
+                },
+                data: {
+                    status: ConsentStatus.EXPIRED,
+                },
+            });
+
+            await prisma.verificationRequest.update({
+                where: {
+                    id: request.id,
+                },
+                data: {
+                    status: "EXPIRED",
+                },
+            });
+
+            throw new AppError(
+                "Consent has expired and verification is no longer permitted.",
+                StatusCodes.BAD_REQUEST
+            );
+        }
+
         switch (request.consent.status) {
             case ConsentStatus.PENDING:
                 throw new AppError(
