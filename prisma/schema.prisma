@@ -1,0 +1,134 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  USER
+  SERVICE_PROVIDER
+  ADMIN
+}
+
+enum ConsentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  REVOKED
+  EXPIRED
+}
+
+enum VerificationRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  REVOKED
+  COMPLETED
+  EXPIRED
+}
+
+enum AuditAction {
+  USER_REGISTERED
+  USER_LOGGED_IN
+  PROVIDER_REGISTERED
+  VERIFICATION_REQUEST_CREATED
+  CONSENT_APPROVED
+  CONSENT_REJECTED
+  CONSENT_REVOKED
+  VERIFICATION_RESPONSE_GENERATED
+}
+
+model User {
+  id        String   @id @default(uuid())
+  fullName  String
+  email     String   @unique
+  password  String
+  role      UserRole @default(USER)
+
+  studentStatus Boolean @default(false)
+  housingEligible Boolean @default(false)
+
+  verificationRequests VerificationRequest[]
+  consents             Consent[]
+  auditLogs            AuditLog[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ServiceProvider {
+  id           String   @id @default(uuid())
+  organisationName String
+  email        String   @unique
+  password     String
+  role         UserRole @default(SERVICE_PROVIDER)
+
+  verificationRequests VerificationRequest[]
+  auditLogs            AuditLog[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VerificationRequest {
+  id String @id @default(uuid())
+
+  providerId String
+  userId     String
+
+  requestedAttribute String
+  purpose            String
+
+  status VerificationRequestStatus @default(PENDING)
+
+  provider ServiceProvider @relation(fields: [providerId], references: [id])
+  user     User            @relation(fields: [userId], references: [id])
+
+  consent Consent?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Consent {
+  id String @id @default(uuid())
+
+  verificationRequestId String @unique
+  userId                String
+
+  status ConsentStatus @default(PENDING)
+
+  approvedAt DateTime?
+  rejectedAt DateTime?
+  revokedAt  DateTime?
+  expiresAt  DateTime?
+
+  verificationRequest VerificationRequest @relation(fields: [verificationRequestId], references: [id])
+  user                User                @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AuditLog {
+  id String @id @default(uuid())
+
+  actorId   String?
+  actorType String
+
+  action AuditAction
+
+  description String
+
+  metadata Json?
+
+  userId     String?
+  providerId String?
+
+  user     User?            @relation(fields: [userId], references: [id])
+  provider ServiceProvider? @relation(fields: [providerId], references: [id])
+
+  createdAt DateTime @default(now())
+}
