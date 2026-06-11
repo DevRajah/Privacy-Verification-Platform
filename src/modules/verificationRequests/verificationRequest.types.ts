@@ -1,5 +1,7 @@
+import { VerificationAttribute } from "@prisma/client";
+
 export type CreateVerificationRequestInput = {
   userEmail: string;
-  requestedAttribute: "studentStatus" | "housingEligible";
+  requestedAttribute: VerificationAttribute;
   purpose: string;
 };

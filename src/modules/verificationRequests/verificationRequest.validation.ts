@@ -1,12 +1,15 @@
 import { z } from "zod";
+import { VerificationAttribute } from "@prisma/client";
 
 // I validate the provider request before it enters my business logic.
-// This protects the API from missing or invalid request data.
+// This makes sure providers can only request approved, supported attributes.
+// This is important for fine-grained attribute-scoped verification.
 export const createVerificationRequestSchema = z.object({
   userEmail: z.string().email("Please provide a valid user email"),
 
-  requestedAttribute: z.enum(["studentStatus", "housingEligible"], {
-    message: "requestedAttribute must be studentStatus or housingEligible",
+  requestedAttribute: z.nativeEnum(VerificationAttribute, {
+    message:
+      "requestedAttribute must be STUDENT_STATUS or HOUSING_ELIGIBILITY",
   }),
 
   purpose: z

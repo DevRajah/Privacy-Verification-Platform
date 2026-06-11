@@ -29,6 +29,11 @@ enum VerificationRequestStatus {
   EXPIRED
 }
 
+enum VerificationAttribute {
+  STUDENT_STATUS
+  HOUSING_ELIGIBILITY
+}
+
 enum AuditAction {
   USER_REGISTERED
   USER_LOGGED_IN
@@ -78,7 +83,7 @@ model VerificationRequest {
   providerId String
   userId     String
 
-  requestedAttribute String
+  requestedAttribute VerificationAttribute
   purpose            String
 
   status VerificationRequestStatus @default(PENDING)

@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import { StatusCodes } from "http-status-codes";
 import { UserRole } from "@prisma/client";
 import { env } from "../config/env";
+import { prisma } from "../config/database";
 
 type JwtPayload = {
   id: string;
@@ -14,16 +15,10 @@ type JwtPayload = {
 /**
  * I use this middleware to protect private routes.
  *
- * What it does:
- * 1. Checks if the request has an Authorization header
- * 2. Extracts the Bearer token
- * 3. Verifies the JWT
- * 4. Saves the logged-in account details inside req.user
- *
- * This supports the dissertation's access control design because
- * protected services should only be used by authenticated users/providers.
+ * It checks the Bearer token, verifies the JWT, confirms the account still
+ * exists in the database, then attaches the logged-in account to req.user.
  */
-export const authenticate = (
+export const authenticate = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -41,6 +36,32 @@ export const authenticate = (
 
   try {
     const decoded = jwt.verify(token, env.jwtSecret) as JwtPayload;
+
+    if (decoded.accountType === "USER") {
+      const user = await prisma.user.findUnique({
+        where: { id: decoded.id },
+      });
+
+      if (!user) {
+        return res.status(StatusCodes.UNAUTHORIZED).json({
+          success: false,
+          message: "Authentication session is no longer valid. Please login again.",
+        });
+      }
+    }
+
+    if (decoded.accountType === "SERVICE_PROVIDER") {
+      const provider = await prisma.serviceProvider.findUnique({
+        where: { id: decoded.id },
+      });
+
+      if (!provider) {
+        return res.status(StatusCodes.UNAUTHORIZED).json({
+          success: false,
+          message: "Authentication session is no longer valid. Please login again.",
+        });
+      }
+    }
 
     req.user = {
       id: decoded.id,

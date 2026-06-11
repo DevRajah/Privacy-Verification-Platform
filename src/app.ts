@@ -7,6 +7,8 @@ import { errorHandler } from "./middlewares/errorHandler";
 import authTestRoutes from "./modules/auth/auth.testRoutes";
 import verificationRequestRoutes from "./modules/verificationRequests/verificationRequest.routes";
 import consentRoutes from "./modules/consents/consent.routes";
+import verificationRoutes from "./modules/verifications/verification.routes";
+import auditLogRoutes from "./modules/auditLogs/auditLog.routes";
 
 const app = express();
 
@@ -37,7 +39,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/auth/test", authTestRoutes);
 app.use("/api/verification-requests", verificationRequestRoutes);
 app.use("/api/consents", consentRoutes);
-
+app.use("/api/verifications", verificationRoutes);
+app.use("/api/audit-logs", auditLogRoutes);
 // I keep this after all routes so it catches errors from the whole app.
 app.use(errorHandler);
 
