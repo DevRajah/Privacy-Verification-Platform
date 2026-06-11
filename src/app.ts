@@ -6,6 +6,7 @@ import authRoutes from "./modules/auth/auth.routes";
 import { errorHandler } from "./middlewares/errorHandler";
 import authTestRoutes from "./modules/auth/auth.testRoutes";
 import verificationRequestRoutes from "./modules/verificationRequests/verificationRequest.routes";
+import consentRoutes from "./modules/consents/consent.routes";
 
 const app = express();
 
@@ -32,11 +33,10 @@ app.get("/", (_req, res) => {
 app.use("/api/auth", authRoutes);
 
 // I keep these temporary test routes to prove authentication and RBAC work.
-// Later, we can remove them or keep them only for development.
+// Later, i am gonna remove them or keep them only for development.
 app.use("/api/auth/test", authTestRoutes);
-
-
 app.use("/api/verification-requests", verificationRequestRoutes);
+app.use("/api/consents", consentRoutes);
 
 // I keep this after all routes so it catches errors from the whole app.
 app.use(errorHandler);
