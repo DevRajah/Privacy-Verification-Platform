@@ -2,19 +2,22 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
+import authRoutes from "./modules/auth/auth.routes";
+import { errorHandler } from "./middlewares/errorHandler";
+import authTestRoutes from "./modules/auth/auth.testRoutes";
 
 const app = express();
 
-// I use helmet to add basic security headers to the API.
+// I use helmet to add helpful security headers.
 app.use(helmet());
 
-// I allow the backend to accept JSON request bodies.
+// I allow JSON request bodies so clients can send data to the API.
 app.use(express.json());
 
-// I enable CORS so the frontend can call this backend later.
+// I enable CORS so the frontend can communicate with this backend later.
 app.use(cors());
 
-// I use morgan so I can see incoming API requests during development.
+// I use morgan to see API requests in the terminal during development.
 app.use(morgan("dev"));
 
 app.get("/", (_req, res) => {
@@ -23,5 +26,15 @@ app.get("/", (_req, res) => {
     message: "Privacy Verification Platform API is running",
   });
 });
+
+// Auth routes
+app.use("/api/auth", authRoutes);
+
+// I keep these temporary test routes to prove authentication and RBAC work.
+// Later, we can remove them or keep them only for development.
+app.use("/api/auth/test", authTestRoutes);
+
+// I keep this after all routes so it catches errors from the whole app.
+app.use(errorHandler);
 
 export default app;
