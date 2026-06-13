@@ -56,6 +56,10 @@ export const consentRepository = {
                 data: {
                     status: "APPROVED",
                     approvedAt: new Date(),
+
+                    // I give approved consent a clear expiry window.
+                    // This supports consent lifecycle management because approval should not last forever.
+                    expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
                 },
                 include: {
                     verificationRequest: true,
@@ -66,11 +70,6 @@ export const consentRepository = {
                 where: { id: consent.verificationRequestId },
                 data: {
                     status: "APPROVED",
-                    approvedAt: new Date(),
-
-                    // I give approved consent a clear expiry window.
-                    // This supports consent lifecycle management because approval should not last forever.
-                    expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
                 },
             });
 
