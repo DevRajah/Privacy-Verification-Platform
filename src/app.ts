@@ -11,6 +11,7 @@ import verificationRoutes from "./modules/verifications/verification.routes";
 import auditLogRoutes from "./modules/auditLogs/auditLog.routes";
 import adminRoutes from "./modules/admin/admin.routes";
 import healthRoutes from "./modules/health/health.routes";
+import dashboardRoutes from "./modules/dashboard/dashboard.routes";
 
 const app = express();
 
@@ -45,6 +46,8 @@ app.use("/api/verifications", verificationRoutes);
 app.use("/api/audit-logs", auditLogRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/health", healthRoutes);
+app.use("/api/dashboard", dashboardRoutes)
+
 // I keep this after all routes so it catches errors from the whole app.
 app.use(errorHandler);
 
