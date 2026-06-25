@@ -2,6 +2,15 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { sendSuccess } from "../../shared/utils/apiResponse";
 import { consentService } from "./consent.service";
+import { AppError } from "../../shared/errors/AppError";
+
+const getParamAsString = (param: string | string[] | undefined, name: string) => {
+  if (!param || Array.isArray(param)) {
+    throw new AppError(`Invalid ${name}`, StatusCodes.BAD_REQUEST);
+  }
+
+  return param;
+};
 
 export const consentController = {
   getMyConsents: async (req: Request, res: Response) => {
@@ -19,7 +28,7 @@ export const consentController = {
 
   approveConsent: async (req: Request, res: Response) => {
     const userId = req.user!.id;
-    const { consentId } = req.params;
+    const consentId = getParamAsString(req.params.consentId, "consentId");
 
     const result = await consentService.approveConsent(consentId, userId);
 
@@ -33,7 +42,7 @@ export const consentController = {
 
   rejectConsent: async (req: Request, res: Response) => {
     const userId = req.user!.id;
-    const { consentId } = req.params;
+    const consentId = getParamAsString(req.params.consentId, "consentId");
 
     const result = await consentService.rejectConsent(consentId, userId);
 
@@ -47,7 +56,7 @@ export const consentController = {
 
   revokeConsent: async (req: Request, res: Response) => {
     const userId = req.user!.id;
-    const { consentId } = req.params;
+    const consentId = getParamAsString(req.params.consentId, "consentId");
 
     const result = await consentService.revokeConsent(consentId, userId);
 

@@ -2,6 +2,15 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { sendSuccess } from "../../shared/utils/apiResponse";
 import { verificationRequestService } from "./verificationRequest.service";
+import { AppError } from "../../shared/errors/AppError";
+
+const getParamAsString = (param: string | string[] | undefined, name: string) => {
+  if (!param || Array.isArray(param)) {
+    throw new AppError(`Invalid ${name}`, StatusCodes.BAD_REQUEST);
+  }
+
+  return param;
+};
 
 export const verificationRequestController = {
   createVerificationRequest: async (req: Request, res: Response) => {
@@ -50,7 +59,7 @@ export const verificationRequestController = {
 
   getRequestById: async (req: Request, res: Response) => {
     const result = await verificationRequestService.getRequestById(
-      req.params.requestId,
+      getParamAsString(req.params.requestId, "requestId"),
       req.user!.id,
       req.user!.accountType
     );
