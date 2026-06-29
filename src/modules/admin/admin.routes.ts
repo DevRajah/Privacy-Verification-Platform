@@ -5,6 +5,45 @@ import { authorizeRoles } from "../../middlewares/authorizeRoles";
 import { asyncHandler } from "../../shared/utils/asyncHandler";
 import { adminController } from "./admin.controller";
 
+/**
+ * @swagger
+ * /api/admin/summary:
+ *   get:
+ *     summary: Get platform admin summary
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Platform summary fetched successfully
+ */
+
+/**
+ * @swagger
+ * /api/admin/audit-logs:
+ *   get:
+ *     summary: Get all audit logs
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: All audit logs fetched successfully
+ */
+
+/**
+ * @swagger
+ * /api/admin/verification-requests:
+ *   get:
+ *     summary: Get all verification requests
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: All verification requests fetched successfully
+ */
+
 const router = Router();
 
 /**

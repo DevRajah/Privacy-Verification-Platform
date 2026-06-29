@@ -7,6 +7,90 @@ import { asyncHandler } from "../../shared/utils/asyncHandler";
 import { createVerificationRequestSchema } from "./verificationRequest.validation";
 import { verificationRequestController } from "./verificationRequest.controller";
 
+
+/**
+ * @swagger
+ * /api/verification-requests:
+ *   post:
+ *     summary: Create a scoped verification request
+ *     tags: [Verification Requests]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - userEmail
+ *               - requestedAttribute
+ *               - purpose
+ *             properties:
+ *               userEmail:
+ *                 type: string
+ *                 example: michael@example.com
+ *               requestedAttribute:
+ *                 type: string
+ *                 enum: [STUDENT_STATUS, HOUSING_ELIGIBILITY]
+ *                 example: STUDENT_STATUS
+ *               purpose:
+ *                 type: string
+ *                 example: To confirm student eligibility for public-service access
+ *     responses:
+ *       201:
+ *         description: Verification request created successfully
+ *       401:
+ *         description: Authentication required
+ *       403:
+ *         description: Service provider role required
+ */
+
+/**
+ * @swagger
+ * /api/verification-requests/user:
+ *   get:
+ *     summary: Get verification requests for logged-in user
+ *     tags: [Verification Requests]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User verification requests fetched successfully
+ */
+
+/**
+ * @swagger
+ * /api/verification-requests/provider:
+ *   get:
+ *     summary: Get verification requests created by logged-in provider
+ *     tags: [Verification Requests]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Provider verification requests fetched successfully
+ */
+
+/**
+ * @swagger
+ * /api/verification-requests/{requestId}:
+ *   get:
+ *     summary: Get one verification request by ID
+ *     tags: [Verification Requests]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: requestId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Verification request fetched successfully
+ */
+
 const router = Router();
 
 /**

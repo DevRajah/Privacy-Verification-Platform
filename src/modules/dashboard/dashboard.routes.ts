@@ -5,6 +5,45 @@ import { authorizeRoles } from "../../middlewares/authorizeRoles";
 import { asyncHandler } from "../../shared/utils/asyncHandler";
 import { dashboardController } from "./dashboard.controller";
 
+/**
+ * @swagger
+ * /api/dashboard/user-summary:
+ *   get:
+ *     summary: Get user dashboard summary
+ *     tags: [Dashboard]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User dashboard summary fetched successfully
+ */
+
+/**
+ * @swagger
+ * /api/dashboard/provider-summary:
+ *   get:
+ *     summary: Get provider dashboard summary
+ *     tags: [Dashboard]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Provider dashboard summary fetched successfully
+ */
+
+/**
+ * @swagger
+ * /api/dashboard/admin-summary:
+ *   get:
+ *     summary: Get admin dashboard summary
+ *     tags: [Dashboard]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Admin dashboard summary fetched successfully
+ */
+
 const router = Router();
 
 /**

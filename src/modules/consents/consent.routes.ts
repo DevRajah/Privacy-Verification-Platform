@@ -5,6 +5,76 @@ import { authorizeRoles } from "../../middlewares/authorizeRoles";
 import { asyncHandler } from "../../shared/utils/asyncHandler";
 import { consentController } from "./consent.controller";
 
+/**
+ * @swagger
+ * /api/consents/my-consents:
+ *   get:
+ *     summary: Get logged-in user's consent records
+ *     tags: [Consents]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User consent records fetched successfully
+ */
+
+/**
+ * @swagger
+ * /api/consents/{consentId}/approve:
+ *   patch:
+ *     summary: Approve pending consent
+ *     tags: [Consents]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: consentId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Consent approved successfully
+ */
+
+/**
+ * @swagger
+ * /api/consents/{consentId}/reject:
+ *   patch:
+ *     summary: Reject pending consent
+ *     tags: [Consents]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: consentId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Consent rejected successfully
+ */
+
+/**
+ * @swagger
+ * /api/consents/{consentId}/revoke:
+ *   patch:
+ *     summary: Revoke approved consent
+ *     tags: [Consents]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: consentId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Consent revoked successfully
+ */
+
 const router = Router();
 
 /**

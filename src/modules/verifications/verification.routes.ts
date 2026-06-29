@@ -7,6 +7,27 @@ import { asyncHandler } from "../../shared/utils/asyncHandler";
 
 import { verificationController } from "./verification.controller";
 
+/**
+ * @swagger
+ * /api/verifications/{requestId}/result:
+ *   get:
+ *     summary: Get fine-grained verification result
+ *     tags: [Verifications]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: requestId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Minimal disclosure verification result generated successfully
+ *       400:
+ *         description: Consent is pending, rejected, revoked, or expired
+ */
+
 const router = Router();
 
 /**

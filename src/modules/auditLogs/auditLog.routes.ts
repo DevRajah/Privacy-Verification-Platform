@@ -5,6 +5,32 @@ import { authorizeRoles } from "../../middlewares/authorizeRoles";
 import { asyncHandler } from "../../shared/utils/asyncHandler";
 import { auditLogController } from "./auditLog.controller";
 
+/**
+ * @swagger
+ * /api/audit-logs/user:
+ *   get:
+ *     summary: Get audit logs for logged-in user
+ *     tags: [Audit Logs]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User audit logs fetched successfully
+ */
+
+/**
+ * @swagger
+ * /api/audit-logs/provider:
+ *   get:
+ *     summary: Get audit logs for logged-in provider
+ *     tags: [Audit Logs]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Provider audit logs fetched successfully
+ */
+
 const router = Router();
 
 /**
