@@ -2,6 +2,18 @@ import { Router } from "express";
 import { asyncHandler } from "../../shared/utils/asyncHandler";
 import { healthController } from "./health.controller";
 
+
+/**
+ * @swagger
+ * /api/health:
+ *   get:
+ *     summary: Check API and database health
+ *     tags: [Health]
+ *     responses:
+ *       200:
+ *         description: System health check passed
+ */
+
 const router = Router();
 
 /**

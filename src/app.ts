@@ -12,6 +12,8 @@ import auditLogRoutes from "./modules/auditLogs/auditLog.routes";
 import adminRoutes from "./modules/admin/admin.routes";
 import healthRoutes from "./modules/health/health.routes";
 import dashboardRoutes from "./modules/dashboard/dashboard.routes";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./docs/swagger";
 
 const app = express();
 
@@ -32,6 +34,12 @@ app.get("/", (_req, res) => {
     success: true,
     message: "Privacy Verification Platform API is running",
   });
+});
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+app.get("/openapi.json", (_req, res) => {
+  res.status(200).json(swaggerSpec);
 });
 
 // Auth routes
